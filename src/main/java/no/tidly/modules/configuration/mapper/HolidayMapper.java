@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import no.tidly.modules.configuration.domain.HolidayEntity;
 import no.tidly.modules.configuration.dto.CreateHolidayRequest;
 import no.tidly.modules.configuration.dto.HolidayResponse;
+import no.tidly.modules.configuration.domain.enums.HolidayType;
 
 @Component
 public class HolidayMapper {
@@ -17,6 +18,7 @@ public class HolidayMapper {
                 .companyId(request.companyId())
                 .date(request.date())
                 .name(request.name())
+                .type(request.type() != null ? request.type() : HolidayType.PUBLIC)
                 .isRecurring(request.isRecurring() != null ? request.isRecurring() : false)
                 .isActive(request.isActive() != null ? request.isActive() : true)
                 .build();
@@ -31,6 +33,7 @@ public class HolidayMapper {
                 entity.getCompanyId(),
                 entity.getDate(),
                 entity.getName(),
+                entity.getType(),
                 entity.getIsRecurring(),
                 entity.getIsActive());
     }
