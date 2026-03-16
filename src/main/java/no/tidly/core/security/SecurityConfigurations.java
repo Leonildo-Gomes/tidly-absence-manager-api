@@ -32,6 +32,8 @@ public class SecurityConfigurations {
                                                 .requestMatchers("/api/v1/teams/**").authenticated()
                                                 .requestMatchers("/api/v1/employees/**").authenticated()
                                                 .requestMatchers("/api/v1/absence-types/**").authenticated()
+                                                .requestMatchers("/api/v1/holidays/**").authenticated()
+                                                .requestMatchers("/api/v1/company-absence-settings/**").authenticated()
                                                 .anyRequest().permitAll())
                                 .oauth2ResourceServer(
                                                 oauth2 -> oauth2.jwt(org.springframework.security.config.Customizer

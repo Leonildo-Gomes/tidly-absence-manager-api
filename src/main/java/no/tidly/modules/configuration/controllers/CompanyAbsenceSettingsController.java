@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -55,8 +54,8 @@ public class CompanyAbsenceSettingsController {
 
     @Operation(summary = "Get company absence settings by company ID", description = "Retrieves a list of absence settings for a specific company.")
     @GetMapping
-    public ResponseEntity<List<CompanyAbsenceSettingsResponse>> getByCompany(@RequestParam UUID companyId) {
-        return ResponseEntity.ok(getCompanyAbsenceSettingsByCompanyUseCase.execute(companyId));
+    public ResponseEntity<List<CompanyAbsenceSettingsResponse>> getByCompany() {
+        return ResponseEntity.ok(getCompanyAbsenceSettingsByCompanyUseCase.execute());
     }
 
     @Operation(summary = "Update company absence settings", description = "Updates existing company absence settings with the provided details.")

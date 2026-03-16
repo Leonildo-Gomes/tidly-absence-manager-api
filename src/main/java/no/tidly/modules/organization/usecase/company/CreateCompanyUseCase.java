@@ -39,7 +39,6 @@ public class CreateCompanyUseCase {
                 .clerkOrgId(request.clerkOrgId())
                 .build();
         var savedEntity = this.companyRepository.save(company);
-        System.out.println("Company created:" + savedEntity);
         return this.mapper.toResponse(savedEntity);
     }
 }

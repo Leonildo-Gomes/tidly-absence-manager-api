@@ -1,21 +1,23 @@
 package no.tidly.modules.configuration.mapper;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Component;
 
 import no.tidly.modules.configuration.domain.HolidayEntity;
-import no.tidly.modules.configuration.dto.CreateHolidayRequest;
-import no.tidly.modules.configuration.dto.HolidayResponse;
 import no.tidly.modules.configuration.domain.enums.HolidayType;
+import no.tidly.modules.configuration.dto.HolidayRequest;
+import no.tidly.modules.configuration.dto.HolidayResponse;
 
 @Component
 public class HolidayMapper {
 
-    public HolidayEntity toEntity(CreateHolidayRequest request) {
+    public HolidayEntity toEntity(HolidayRequest request, UUID companyId) {
         if (request == null) {
             return null;
         }
         return HolidayEntity.builder()
-                .companyId(request.companyId())
+                .companyId(companyId)
                 .date(request.date())
                 .name(request.name())
                 .type(request.type() != null ? request.type() : HolidayType.PUBLIC)

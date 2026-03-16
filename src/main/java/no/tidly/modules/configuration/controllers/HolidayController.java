@@ -12,14 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import no.tidly.modules.configuration.dto.CreateHolidayRequest;
+import no.tidly.modules.configuration.dto.HolidayRequest;
 import no.tidly.modules.configuration.dto.HolidayResponse;
 import no.tidly.modules.configuration.dto.UpdateHolidayRequest;
 import no.tidly.modules.configuration.usecase.holiday.CreateHolidayUseCase;
@@ -42,7 +41,7 @@ public class HolidayController {
 
     @Operation(summary = "Create a new holiday", description = "Creates a new holiday with the provided details.")
     @PostMapping
-    public ResponseEntity<HolidayResponse> createHoliday(@Valid @RequestBody CreateHolidayRequest request) {
+    public ResponseEntity<HolidayResponse> createHoliday(@Valid @RequestBody HolidayRequest request) {
         HolidayResponse response = createHolidayUseCase.execute(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -56,15 +55,8 @@ public class HolidayController {
 
     @Operation(summary = "Get all holidays", description = "Retrieves a list of all holidays, optionally filtered by company ID.")
     @GetMapping
-    public ResponseEntity<List<HolidayResponse>> getAllHolidays(@RequestParam(required = false) UUID companyId) {
-        // If companyId is null, it might return only global holidays or empty depending
-        // on logic.
-        // The use case is implemented to return both specific and global given a
-        // companyId.
-        // If companyId is NOT provided, maybe we should return only global holidays?
-        // For now allowing null to pass to usecase which creates query "where companyId
-        // = null or companyId is null" -> global only.
-        List<HolidayResponse> response = getAllHolidaysUseCase.execute(companyId);
+    public ResponseEntity<List<HolidayResponse>> getAllHolidays() {
+        List<HolidayResponse> response = getAllHolidaysUseCase.execute();
         return ResponseEntity.ok(response);
     }
 
