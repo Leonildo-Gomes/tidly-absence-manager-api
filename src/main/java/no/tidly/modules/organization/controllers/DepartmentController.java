@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,12 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import no.tidly.modules.organization.dto.AssignManagerRequest;
 import no.tidly.modules.organization.dto.DepartmentManagerHistoryResponse;
 import no.tidly.modules.organization.dto.DepartmentRequest;
 import no.tidly.modules.organization.dto.DepartmentResponse;
 import no.tidly.modules.organization.dto.TeamResponse;
-import no.tidly.modules.organization.mapper.DepartmentMapper;
 import no.tidly.modules.organization.usecase.department.AssignDepartmentManagerUseCase;
 import no.tidly.modules.organization.usecase.department.CreateDepartmentUseCase;
 import no.tidly.modules.organization.usecase.department.DeleteDepartmentUseCase;
@@ -37,6 +36,7 @@ import no.tidly.modules.organization.usecase.team.GetTeamsByDepartmentIdUseCase;
 @RestController
 @RequestMapping("/api/v1/departments")
 @Tag(name = "Departments", description = "Department management")
+@RequiredArgsConstructor
 public class DepartmentController {
 
     private final CreateDepartmentUseCase createDepartmentUseCase;
@@ -47,25 +47,6 @@ public class DepartmentController {
     private final AssignDepartmentManagerUseCase assignDepartmentManagerUseCase;
     private final GetDepartmentManagerHistoryUseCase getDepartmentManagerHistoryUseCase;
     private final GetTeamsByDepartmentIdUseCase getTeamsByDepartmentIdUseCase;
-
-    public DepartmentController(CreateDepartmentUseCase createDepartmentUseCase,
-            GetDepartmentByIdUseCase getDepartmentByIdUseCase,
-            GetAllDepartmentsUseCase getAllDepartmentsUseCase,
-            UpdateDepartmentUseCase updateDepartmentUseCase,
-            DeleteDepartmentUseCase deleteDepartmentUseCase,
-            AssignDepartmentManagerUseCase assignDepartmentManagerUseCase,
-            GetDepartmentManagerHistoryUseCase getDepartmentManagerHistoryUseCase,
-            GetTeamsByDepartmentIdUseCase getTeamsByDepartmentIdUseCase,
-            DepartmentMapper mapper) {
-        this.createDepartmentUseCase = createDepartmentUseCase;
-        this.getDepartmentByIdUseCase = getDepartmentByIdUseCase;
-        this.getAllDepartmentsUseCase = getAllDepartmentsUseCase;
-        this.updateDepartmentUseCase = updateDepartmentUseCase;
-        this.deleteDepartmentUseCase = deleteDepartmentUseCase;
-        this.assignDepartmentManagerUseCase = assignDepartmentManagerUseCase;
-        this.getDepartmentManagerHistoryUseCase = getDepartmentManagerHistoryUseCase;
-        this.getTeamsByDepartmentIdUseCase = getTeamsByDepartmentIdUseCase;
-    }
 
     @Operation(summary = "Create a new department", description = "Creates a new department with the provided details.")
     @PostMapping
@@ -101,10 +82,11 @@ public class DepartmentController {
     }
 
     @Operation(summary = "Assign a department manager", description = "Assigns a new manager to the department.")
-    @PatchMapping("/{id}/manager")
-    public ResponseEntity<Void> assignManager(@PathVariable UUID id, @Valid @RequestBody AssignManagerRequest request) {
-        this.assignDepartmentManagerUseCase.execute(id, request.managerId());
-        return ResponseEntity.noContent().build();
+    @PostMapping("/{id}/manager")
+    public ResponseEntity<DepartmentManagerHistoryResponse> assignManager(@PathVariable UUID id,
+            @Valid @RequestBody AssignManagerRequest request) {
+        var history = this.assignDepartmentManagerUseCase.execute(id, request);
+        return ResponseEntity.ok(history);
     }
 
     @Operation(summary = "Get department manager history", description = "Retrieves the history of managers for a specific department.")

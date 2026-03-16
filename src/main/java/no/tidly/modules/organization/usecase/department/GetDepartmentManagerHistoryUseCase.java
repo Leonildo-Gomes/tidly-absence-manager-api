@@ -26,12 +26,7 @@ public class GetDepartmentManagerHistoryUseCase {
         if (!this.departmentRepository.existsById(departmentId)) {
             throw new ResourceNotFoundException("Department not found");
         }
-        // Assuming we want all history. JPA method needs to be added or we can rely on standard findAll and filter, 
-        // but better to have a custom query in repo. 
-        // For now, let's just add a method to repo to find by department id order by start date desc.
-        return this.historyRepository.findAll().stream()
-                .filter(h -> h.getDepartment().getId().equals(departmentId))
-                .sorted((a, b) -> b.getStartDate().compareTo(a.getStartDate()))
-                .toList();
+        // Use the optimized repository method
+        return this.historyRepository.findByDepartmentIdOrderByStartDateDesc(departmentId);
     }
 }
