@@ -1,4 +1,4 @@
-package no.tidly.modules.organization.usecase.employeejobtitle;
+package no.tidly.modules.organization.usecase.employee;
 
 import java.util.List;
 import java.util.UUID;
