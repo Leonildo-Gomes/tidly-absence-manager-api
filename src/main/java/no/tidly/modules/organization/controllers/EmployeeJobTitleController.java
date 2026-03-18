@@ -35,9 +35,6 @@ public class EmployeeJobTitleController {
     @PostMapping("/employees/{employeeId}/job-titles")
     public ResponseEntity<EmployeeJobTitleResponse> assign(@PathVariable UUID employeeId,
             @Valid @RequestBody EmployeeJobTitleRequest request) {
-        // Ensure the request body matches the path variable if needed, or just rely on
-        // use case validation
-        // For now, we trust the request body but we could override employeeId from path
         if (!employeeId.equals(request.employeeId())) {
             return ResponseEntity.badRequest().build();
         }

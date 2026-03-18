@@ -54,15 +54,15 @@ Marque com `[x]` o que já foi implementado e testado.
 
 ### 📅 Holidays (Feriados & Calendário)
 
-- [ ] **POST** `/holidays` - Cadastrar feriado (Manual ou Importação)
-- [ ] **GET** `/holidays` - Listar feriados por ano/país
-- [ ] **DELETE** `/holidays/{id}` - Remover feriado
+- [x] **POST** `/holidays` - Cadastrar feriado (Manual ou Importação)
+- [x] **GET** `/holidays` - Listar feriados por ano/país
+- [x] **DELETE** `/holidays/{id}` - Remover feriado
 
 ### 🏷️ Absence Types (Tipos de Ausência)
 
 - [x] **POST** `/absence-types` - Criar tipo (Férias, Doença, etc.)
 - [x] **GET** `/absence-types` - Listar tipos disponíveis
-- [ ] **PUT** `/absence-types/{id}` - Configurar regras (limites, documentos obrigatórios)
+- [x] **PUT** `/absence-types/{id}` - Configurar regras (limites, documentos obrigatórios)
 
 ### ⚖️ Settings (Configurações Globais)
 

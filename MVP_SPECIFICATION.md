@@ -36,6 +36,13 @@ O motor operacional que conecta o funcionário ao gestor.
 * **Fluxo de Status:** Ciclo de vida: `PENDING` -> `AUTHORIZED` (pelo Team Leader) -> `APPROVED` (pelo Manager).
 * **Approval Log:** Registo imutável de todas as decisões tomadas sobre um pedido.
 
+### 💳 Módulo 4: Subscrição & Facturação (Monetização)
+Garante a sustentabilidade do modelo SaaS e a gestão do ciclo de vida do cliente.
+* **Plan Management:** Definição de planos (ex: Free, Pro, Enterprise) com limites específicos.
+* **Subscription Lifecycle:** Gestão de estados da subscrição (`ACTIVE`, `PAST_DUE`, `CANCELED`).
+* **Invoicing & Payments:** Geração automática de faturas e integração com processadores de pagamento (Stripe/Nets).
+* **Usage Quotas:** Monitorização de limites do plano (ex: número máximo de funcionários por empresa).
+
 
 
 ---
@@ -68,6 +75,7 @@ O motor operacional que conecta o funcionário ao gestor.
 3.  **Milestone 3:** Lógica de Saldos e Transações (Módulo 2).
 4.  **Milestone 4:** Workflow completo de aprovação e notificações.
 5.  **Milestone 5:** Dashboard de Calendário para Gestores no Frontend.
+6.  **Milestone 6:** Integração de Subscrições e Portal de Facturação.
 
 ---
 
@@ -100,6 +108,12 @@ no.tidly/
 │       ├── domain/              # AbsenceRequest, ApprovalLog, Balance
 │       ├── repository/
 │       └── service/             # Ex: Motor de aprovação e saldo
+│
+│   └── billing/                 # Módulo 4: Subscription & Invoicing
+│       ├── controllers/
+│       ├── domain/              # Plan, Subscription, SubscriptionInvoice
+│       ├── repository/
+│       └── service/             # Ex: Gestão de pagamentos e faturas
 │
 └── TidlyApplication.java        # Main Class
 ```
