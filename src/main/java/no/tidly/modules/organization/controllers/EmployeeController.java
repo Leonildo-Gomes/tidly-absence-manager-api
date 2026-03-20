@@ -30,6 +30,7 @@ import no.tidly.modules.organization.usecase.employee.DeleteEmployeeUseCase;
 import no.tidly.modules.organization.usecase.employee.GetAllEmployeesUseCase;
 import no.tidly.modules.organization.usecase.employee.GetEmployeeByIdUseCase;
 import no.tidly.modules.organization.usecase.employee.GetEmployeeJobTitleHistoryUseCase;
+import no.tidly.modules.organization.usecase.employee.GetMyProfileUseCase;
 import no.tidly.modules.organization.usecase.employee.UpdateEmployeeUseCase;
 
 @RestController
@@ -45,11 +46,18 @@ public class EmployeeController {
     private final DeleteEmployeeUseCase deleteEmployeeUseCase;
     private final AssignJobTitleUseCase assignJobTitleUseCase;
     private final GetEmployeeJobTitleHistoryUseCase getEmployeeJobTitleHistoryUseCase;
+    private final GetMyProfileUseCase getMyProfileUseCase;
 
     @Operation(summary = "Create a new employee", description = "Creates a new employee with the provided details.")
     @PostMapping
     public ResponseEntity<EmployeeResponse> create(@Valid @RequestBody EmployeeRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.createEmployeeUseCase.execute(request));
+    }
+
+    @Operation(summary = "Get my profile", description = "Returns the profile of the currently authenticated employee (based on Clerk JWT).")
+    @GetMapping("/me")
+    public ResponseEntity<EmployeeResponse> getMyProfile() {
+        return ResponseEntity.ok(this.getMyProfileUseCase.execute());
     }
 
     @Operation(summary = "Get employee by ID", description = "Retrieves an employee by their unique identifier.")
