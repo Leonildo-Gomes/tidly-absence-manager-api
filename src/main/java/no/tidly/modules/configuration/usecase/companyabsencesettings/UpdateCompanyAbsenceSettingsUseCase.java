@@ -11,6 +11,7 @@ import no.tidly.core.shared.Utils;
 import no.tidly.modules.configuration.domain.CompanyAbsenceSettingsEntity;
 import no.tidly.modules.configuration.dto.CompanyAbsenceSettingsRequest;
 import no.tidly.modules.configuration.dto.CompanyAbsenceSettingsResponse;
+import no.tidly.modules.configuration.mapper.CompanyAbsenceSettingsMapper;
 import no.tidly.modules.configuration.repository.CompanyAbsenceSettingsRepository;
 
 @Service
@@ -18,6 +19,7 @@ import no.tidly.modules.configuration.repository.CompanyAbsenceSettingsRepositor
 public class UpdateCompanyAbsenceSettingsUseCase {
 
     private final CompanyAbsenceSettingsRepository repository;
+    private final CompanyAbsenceSettingsMapper mapper;
 
     @Transactional
     public CompanyAbsenceSettingsResponse execute(UUID id, CompanyAbsenceSettingsRequest request) {
@@ -27,18 +29,6 @@ public class UpdateCompanyAbsenceSettingsUseCase {
         Utils.copyNonNullProperties(request, entity);
 
         CompanyAbsenceSettingsEntity updatedEntity = repository.save(entity);
-        return mapToResponse(updatedEntity);
-    }
-
-    private CompanyAbsenceSettingsResponse mapToResponse(CompanyAbsenceSettingsEntity entity) {
-        return new CompanyAbsenceSettingsResponse(
-                entity.getId(),
-                entity.getCompanyId(),
-                entity.getAbsenceTypeId(),
-                entity.getDepartmentId(),
-                entity.getMaxDaysPerYear(),
-                entity.getMinNoticeDays(),
-                entity.getCreatedAt(),
-                entity.getUpdatedAt());
+        return mapper.toResponse(updatedEntity);
     }
 }

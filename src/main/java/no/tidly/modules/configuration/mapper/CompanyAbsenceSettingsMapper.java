@@ -11,8 +11,9 @@ public class CompanyAbsenceSettingsMapper {
     public CompanyAbsenceSettingsResponse toResponse(CompanyAbsenceSettingsEntity entity) {
         return new CompanyAbsenceSettingsResponse(
                 entity.getId(),
-                entity.getCompanyId(),
-                entity.getAbsenceTypeId(),
+                entity.getCompany().getId(),
+                entity.getAbsenceType().getId(),
+                entity.getAbsenceType().getName(),
                 entity.getDepartmentId(),
                 entity.getMaxDaysPerYear(),
                 entity.getMinNoticeDays(),

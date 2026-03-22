@@ -5,6 +5,9 @@ import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -14,6 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import no.tidly.core.shared.BaseEntity;
+import no.tidly.modules.organization.domain.CompanyEntity;
 
 @Entity
 @Table(name = "company_absence_settings")
@@ -24,11 +28,13 @@ import no.tidly.core.shared.BaseEntity;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CompanyAbsenceSettingsEntity extends BaseEntity {
 
-    @Column(name = "company_id", nullable = false)
-    private UUID companyId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id", nullable = false)
+    private CompanyEntity company;
 
-    @Column(name = "absence_type_id", nullable = false)
-    private UUID absenceTypeId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "absence_type_id", nullable = false)
+    private AbsenceTypeEntity absenceType;
 
     @Column(name = "department_id")
     private UUID departmentId;
