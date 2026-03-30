@@ -1,5 +1,6 @@
 package no.tidly.modules.workflow.controllers;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ import no.tidly.modules.workflow.dto.AbsenceRequestResponse;
 import no.tidly.modules.workflow.usecase.absencerequest.CreateAbsenceRequestUseCase;
 import no.tidly.modules.workflow.usecase.absencerequest.DeleteAbsenceRequestUseCase;
 import no.tidly.modules.workflow.usecase.absencerequest.GetAbsenceRequestByIdUseCase;
+import no.tidly.modules.workflow.usecase.absencerequest.GetAbsenceRequestsByEmployeeAndYearUseCase;
 import no.tidly.modules.workflow.usecase.absencerequest.UpdateAbsenceRequestUseCase;
 
 @RestController
@@ -32,6 +34,7 @@ public class AbsenceRequestController {
 
     private final CreateAbsenceRequestUseCase createUseCase;
     private final GetAbsenceRequestByIdUseCase getByIdUseCase;
+    private final GetAbsenceRequestsByEmployeeAndYearUseCase getByEmployeeAndYearUseCase;
     private final UpdateAbsenceRequestUseCase updateUseCase;
     private final DeleteAbsenceRequestUseCase deleteUseCase;
 
@@ -45,6 +48,12 @@ public class AbsenceRequestController {
     @GetMapping("/{id}")
     public ResponseEntity<AbsenceRequestResponse> getById(@PathVariable UUID id) {
         return ResponseEntity.ok(this.getByIdUseCase.execute(id));
+    }
+
+    @Operation(summary = "Get absence requests by employee and year", description = "Returns all absence requests for a given employee in a specific year.")
+    @GetMapping("/employee/year/{year}")
+    public ResponseEntity<List<AbsenceRequestResponse>> getByEmployeeAndYear(@PathVariable Integer year) {
+        return ResponseEntity.ok(this.getByEmployeeAndYearUseCase.execute(year));
     }
 
     @Operation(summary = "Update an absence request", description = "Updates an existing absence request with the provided details.")

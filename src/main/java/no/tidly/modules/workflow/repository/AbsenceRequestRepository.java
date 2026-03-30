@@ -14,4 +14,6 @@ public interface AbsenceRequestRepository extends JpaRepository<AbsenceRequestEn
     List<AbsenceRequestEntity> findByEmployeeId(UUID employeeId);
 
     List<AbsenceRequestEntity> findByStatus(AbsenceStatus status);
+
+    List<AbsenceRequestEntity> findByEmployeeIdAndYear(UUID employeeId, Integer year);
 }
