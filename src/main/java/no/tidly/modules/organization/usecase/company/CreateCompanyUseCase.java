@@ -2,6 +2,7 @@ package no.tidly.modules.organization.usecase.company;
 
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
 import no.tidly.core.exceptions.OrgNumberFoundException;
 import no.tidly.modules.organization.domain.CompanyEntity;
 import no.tidly.modules.organization.dto.CompanyRequest;
@@ -10,15 +11,11 @@ import no.tidly.modules.organization.mapper.CompanyMapper;
 import no.tidly.modules.organization.repository.CompanyRepository;
 
 @Service
+@RequiredArgsConstructor
 public class CreateCompanyUseCase {
 
     private final CompanyRepository companyRepository;
     private final CompanyMapper mapper;
-
-    public CreateCompanyUseCase(CompanyRepository companyRepository, CompanyMapper mapper) {
-        this.companyRepository = companyRepository;
-        this.mapper = mapper;
-    }
 
     public CompanyResponse execute(CompanyRequest request) {
         System.out.println(" Criando company:" + request);

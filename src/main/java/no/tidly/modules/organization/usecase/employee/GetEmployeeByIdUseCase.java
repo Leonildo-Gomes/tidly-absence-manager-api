@@ -8,17 +8,14 @@ import no.tidly.core.exceptions.ResourceNotFoundException;
 import no.tidly.modules.organization.dto.EmployeeResponse;
 import no.tidly.modules.organization.mapper.EmployeeMapper;
 import no.tidly.modules.organization.repository.EmployeeRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class GetEmployeeByIdUseCase {
 
     private final EmployeeRepository employeeRepository;
     private final EmployeeMapper mapper;
-
-    public GetEmployeeByIdUseCase(EmployeeRepository employeeRepository, EmployeeMapper mapper) {
-        this.employeeRepository = employeeRepository;
-        this.mapper = mapper;
-    }
 
     public EmployeeResponse execute(UUID id) {
         return this.employeeRepository.findById(id)

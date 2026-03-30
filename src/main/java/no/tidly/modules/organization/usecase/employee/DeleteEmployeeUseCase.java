@@ -7,15 +7,13 @@ import org.springframework.stereotype.Service;
 import no.tidly.core.exceptions.ResourceNotFoundException;
 import no.tidly.modules.organization.domain.EmployeeEntity;
 import no.tidly.modules.organization.repository.EmployeeRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class DeleteEmployeeUseCase {
 
     private final EmployeeRepository repository;
-
-    public DeleteEmployeeUseCase(EmployeeRepository repository) {
-        this.repository = repository;
-    }
 
     public void execute(UUID id) {
         EmployeeEntity employee = this.repository.findById(id)

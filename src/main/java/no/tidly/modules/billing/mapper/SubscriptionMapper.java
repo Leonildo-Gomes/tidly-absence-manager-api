@@ -10,15 +10,13 @@ import no.tidly.modules.billing.domain.enums.PlanInterval;
 import no.tidly.modules.billing.domain.enums.SubscriptionStatus;
 import no.tidly.modules.billing.dto.SubscriptionRequest;
 import no.tidly.modules.billing.dto.SubscriptionResponse;
+import lombok.RequiredArgsConstructor;
 
 @Component
+@RequiredArgsConstructor
 public class SubscriptionMapper {
 
     private final PlanMapper planMapper;
-
-    public SubscriptionMapper(PlanMapper planMapper) {
-        this.planMapper = planMapper;
-    }
 
     public Subscription toEntity(SubscriptionRequest request, Plan plan) {
         LocalDateTime now = LocalDateTime.now();

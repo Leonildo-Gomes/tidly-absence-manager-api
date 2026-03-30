@@ -9,17 +9,14 @@ import no.tidly.core.exceptions.ResourceNotFoundException;
 import no.tidly.core.security.SecurityContextService;
 import no.tidly.modules.organization.domain.CompanyEntity;
 import no.tidly.modules.organization.repository.CompanyRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class DeleteCompanyUseCase {
 
     private final CompanyRepository repository;
     private final SecurityContextService securityContextService;
-
-    public DeleteCompanyUseCase(CompanyRepository repository, SecurityContextService securityContextService) {
-        this.repository = repository;
-        this.securityContextService = securityContextService;
-    }
 
     public void execute(UUID id) {
         String activeClerkOrgId = securityContextService.getCurrentOrganizationId();

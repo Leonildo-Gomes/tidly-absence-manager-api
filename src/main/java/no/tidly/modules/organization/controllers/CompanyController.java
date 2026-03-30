@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import no.tidly.modules.organization.dto.CompanyRequest;
 import no.tidly.modules.organization.dto.CompanyResponse;
 import no.tidly.modules.organization.dto.UpdateCompanyRequest;
@@ -26,10 +27,10 @@ import no.tidly.modules.organization.usecase.company.GetAllCompaniesUseCase;
 import no.tidly.modules.organization.usecase.company.GetCompanyByIdUseCase;
 import no.tidly.modules.organization.usecase.company.UpdateCompanyUseCase;
 
-
 @RestController
 @RequestMapping("/api/v1/companies")
 @Tag(name = "Company", description = "Company management")
+@RequiredArgsConstructor
 public class CompanyController {
 
     private final CreateCompanyUseCase createCompanyUseCase;
@@ -37,18 +38,6 @@ public class CompanyController {
     private final GetAllCompaniesUseCase getAllCompaniesUseCase;
     private final UpdateCompanyUseCase updateCompanyUseCase;
     private final DeleteCompanyUseCase deleteCompanyUseCase;
-
-    public CompanyController(CreateCompanyUseCase createCompanyUseCase,
-            GetCompanyByIdUseCase getCompanyByIdUseCase,
-            GetAllCompaniesUseCase getAllCompaniesUseCase,
-            UpdateCompanyUseCase updateCompanyUseCase,
-            DeleteCompanyUseCase deleteCompanyUseCase) {
-        this.createCompanyUseCase = createCompanyUseCase;
-        this.getCompanyByIdUseCase = getCompanyByIdUseCase;
-        this.getAllCompaniesUseCase = getAllCompaniesUseCase;
-        this.updateCompanyUseCase = updateCompanyUseCase;
-        this.deleteCompanyUseCase = deleteCompanyUseCase;
-    }
 
     @Operation(summary = "Create a new company", description = "Creates a new company with the provided details.")
     @PostMapping

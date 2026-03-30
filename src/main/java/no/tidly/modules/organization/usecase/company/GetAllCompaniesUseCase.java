@@ -8,20 +8,15 @@ import no.tidly.core.security.SecurityContextService;
 import no.tidly.modules.organization.dto.CompanyResponse;
 import no.tidly.modules.organization.mapper.CompanyMapper;
 import no.tidly.modules.organization.repository.CompanyRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class GetAllCompaniesUseCase {
 
     private final CompanyRepository companyRepository;
     private final CompanyMapper mapper;
     private final SecurityContextService securityContextService;
-
-    public GetAllCompaniesUseCase(CompanyRepository companyRepository, CompanyMapper mapper,
-            SecurityContextService securityContextService) {
-        this.companyRepository = companyRepository;
-        this.mapper = mapper;
-        this.securityContextService = securityContextService;
-    }
 
     public List<CompanyResponse> execute() {
         String activeClerkOrgId = securityContextService.getCurrentOrganizationId();

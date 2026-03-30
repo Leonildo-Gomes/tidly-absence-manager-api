@@ -10,17 +10,14 @@ import no.tidly.modules.organization.dto.DepartmentRequest;
 import no.tidly.modules.organization.dto.DepartmentResponse;
 import no.tidly.modules.organization.mapper.DepartmentMapper;
 import no.tidly.modules.organization.repository.DepartmentRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class UpdateDepartmentUseCase {
 
     private final DepartmentRepository departmentRepository;
     private final DepartmentMapper mapper;
-
-    public UpdateDepartmentUseCase(DepartmentRepository departmentRepository, DepartmentMapper mapper) {
-        this.departmentRepository = departmentRepository;
-        this.mapper = mapper;
-    }
 
     public DepartmentResponse execute(UUID id, DepartmentRequest request) {
         var department = this.departmentRepository.findById(id)

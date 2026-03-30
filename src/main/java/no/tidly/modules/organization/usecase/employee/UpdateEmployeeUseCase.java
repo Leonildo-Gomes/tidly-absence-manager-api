@@ -12,23 +12,16 @@ import no.tidly.modules.organization.mapper.EmployeeMapper;
 import no.tidly.modules.organization.repository.CompanyRepository;
 import no.tidly.modules.organization.repository.EmployeeRepository;
 import no.tidly.modules.organization.repository.TeamRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class UpdateEmployeeUseCase {
 
         private final EmployeeRepository employeeRepository;
         private final CompanyRepository companyRepository;
         private final TeamRepository teamRepository;
         private final EmployeeMapper mapper;
-
-        public UpdateEmployeeUseCase(EmployeeRepository employeeRepository,
-                        CompanyRepository companyRepository,
-                        TeamRepository teamRepository, EmployeeMapper mapper) {
-                this.employeeRepository = employeeRepository;
-                this.companyRepository = companyRepository;
-                this.teamRepository = teamRepository;
-                this.mapper = mapper;
-        }
 
         public EmployeeResponse execute(UUID id, EmployeeRequest request) {
                 var employee = this.employeeRepository.findById(id)

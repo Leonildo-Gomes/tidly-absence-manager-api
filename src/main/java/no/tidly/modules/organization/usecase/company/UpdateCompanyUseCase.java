@@ -12,20 +12,15 @@ import no.tidly.modules.organization.dto.CompanyResponse;
 import no.tidly.modules.organization.dto.UpdateCompanyRequest;
 import no.tidly.modules.organization.mapper.CompanyMapper;
 import no.tidly.modules.organization.repository.CompanyRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class UpdateCompanyUseCase {
 
     private final CompanyRepository companyRepository;
     private final CompanyMapper mapper;
     private final SecurityContextService securityContextService;
-
-    public UpdateCompanyUseCase(CompanyRepository companyRepository, CompanyMapper mapper,
-            SecurityContextService securityContextService) {
-        this.companyRepository = companyRepository;
-        this.mapper = mapper;
-        this.securityContextService = securityContextService;
-    }
 
     public CompanyResponse execute(UUID id, UpdateCompanyRequest request) {
         String activeClerkOrgId = securityContextService.getCurrentOrganizationId();

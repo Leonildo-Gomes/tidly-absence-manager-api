@@ -13,24 +13,16 @@ import no.tidly.modules.organization.mapper.DepartmentManagerHistoryMapper;
 import no.tidly.modules.organization.repository.DepartmentManagerHistoryRepository;
 import no.tidly.modules.organization.repository.DepartmentRepository;
 import no.tidly.modules.organization.repository.EmployeeRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class AssignDepartmentManagerUseCase {
 
         private final DepartmentRepository departmentRepository;
         private final EmployeeRepository employeeRepository;
         private final DepartmentManagerHistoryRepository historyRepository;
         private final DepartmentManagerHistoryMapper mapper;
-
-        public AssignDepartmentManagerUseCase(DepartmentRepository departmentRepository,
-                        EmployeeRepository employeeRepository,
-                        DepartmentManagerHistoryRepository historyRepository,
-                        DepartmentManagerHistoryMapper mapper) {
-                this.departmentRepository = departmentRepository;
-                this.employeeRepository = employeeRepository;
-                this.historyRepository = historyRepository;
-                this.mapper = mapper;
-        }
 
         @Transactional
         public DepartmentManagerHistoryResponse execute(UUID departmentId, AssignManagerRequest request) {

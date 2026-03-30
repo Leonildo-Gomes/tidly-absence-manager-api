@@ -5,17 +5,15 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.RequiredArgsConstructor;
 import no.tidly.core.exceptions.ResourceNotFoundException;
 import no.tidly.modules.organization.repository.DepartmentManagerHistoryRepository;
 
 @Service
+@RequiredArgsConstructor
 public class DeleteDepartmentManagerHistoryUseCase {
 
     private final DepartmentManagerHistoryRepository historyRepository;
-
-    public DeleteDepartmentManagerHistoryUseCase(DepartmentManagerHistoryRepository historyRepository) {
-        this.historyRepository = historyRepository;
-    }
 
     @Transactional
     public void execute(UUID id) {

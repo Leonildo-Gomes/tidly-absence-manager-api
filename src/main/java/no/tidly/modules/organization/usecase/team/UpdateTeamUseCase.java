@@ -12,20 +12,15 @@ import no.tidly.modules.organization.dto.TeamResponse;
 import no.tidly.modules.organization.mapper.TeamMapper;
 import no.tidly.modules.organization.repository.DepartmentRepository;
 import no.tidly.modules.organization.repository.TeamRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class UpdateTeamUseCase {
 
     private final TeamRepository teamRepository;
     private final DepartmentRepository departmentRepository;
     private final TeamMapper mapper;
-
-    public UpdateTeamUseCase(TeamRepository teamRepository, DepartmentRepository departmentRepository,
-            TeamMapper mapper) {
-        this.teamRepository = teamRepository;
-        this.departmentRepository = departmentRepository;
-        this.mapper = mapper;
-    }
 
     public TeamResponse execute(UUID id, TeamRequest request) {
         TeamEntity team = this.teamRepository.findById(id)

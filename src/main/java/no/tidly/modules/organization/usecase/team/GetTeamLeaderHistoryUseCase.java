@@ -9,18 +9,14 @@ import no.tidly.core.exceptions.ResourceNotFoundException;
 import no.tidly.modules.organization.domain.TeamLeaderHistoryEntity;
 import no.tidly.modules.organization.repository.TeamLeaderHistoryRepository;
 import no.tidly.modules.organization.repository.TeamRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class GetTeamLeaderHistoryUseCase {
 
     private final TeamRepository teamRepository;
     private final TeamLeaderHistoryRepository historyRepository;
-
-    public GetTeamLeaderHistoryUseCase(TeamRepository teamRepository,
-            TeamLeaderHistoryRepository historyRepository) {
-        this.teamRepository = teamRepository;
-        this.historyRepository = historyRepository;
-    }
 
     public List<TeamLeaderHistoryEntity> execute(UUID teamId) {
         if (!this.teamRepository.existsById(teamId)) {

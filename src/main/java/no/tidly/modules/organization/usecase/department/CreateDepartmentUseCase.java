@@ -2,6 +2,7 @@ package no.tidly.modules.organization.usecase.department;
 
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
 import no.tidly.core.exceptions.ResourceNotFoundException;
 import no.tidly.modules.organization.domain.DepartmentEntity;
 import no.tidly.modules.organization.dto.DepartmentRequest;
@@ -11,18 +12,12 @@ import no.tidly.modules.organization.repository.CompanyRepository;
 import no.tidly.modules.organization.repository.DepartmentRepository;
 
 @Service
+@RequiredArgsConstructor
 public class CreateDepartmentUseCase {
 
     private final DepartmentRepository departmentRepository;
     private final CompanyRepository companyRepository;
     private final DepartmentMapper departmentMapper;
-
-    public CreateDepartmentUseCase(DepartmentRepository departmentRepository,
-            CompanyRepository companyRepository, DepartmentMapper departmentMapper) {
-        this.departmentRepository = departmentRepository;
-        this.companyRepository = companyRepository;
-        this.departmentMapper = departmentMapper;
-    }
 
     public DepartmentResponse execute(DepartmentRequest request) {
         var company = this.companyRepository.findById(request.companyId())

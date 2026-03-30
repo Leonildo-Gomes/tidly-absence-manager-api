@@ -11,22 +11,16 @@ import no.tidly.modules.organization.dto.DepartmentResponse;
 import no.tidly.modules.organization.mapper.DepartmentMapper;
 import no.tidly.modules.organization.repository.CompanyRepository;
 import no.tidly.modules.organization.repository.DepartmentRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class GetAllDepartmentsUseCase {
 
     private final DepartmentRepository departmentRepository;
     private final DepartmentMapper departmentMapper;
     private final SecurityContextService securityContextService;
     private final CompanyRepository companyRepository;
-
-    public GetAllDepartmentsUseCase(DepartmentRepository departmentRepository, DepartmentMapper departmentMapper,
-            SecurityContextService securityContextService, CompanyRepository companyRepository) {
-        this.departmentRepository = departmentRepository;
-        this.departmentMapper = departmentMapper;
-        this.securityContextService = securityContextService;
-        this.companyRepository = companyRepository;
-    }
 
     public List<DepartmentResponse> execute() {
         String activeClerkOrgId = securityContextService.getCurrentOrganizationId();

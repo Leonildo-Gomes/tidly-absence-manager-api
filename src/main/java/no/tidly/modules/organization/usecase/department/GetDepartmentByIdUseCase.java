@@ -8,17 +8,14 @@ import no.tidly.core.exceptions.ResourceNotFoundException;
 import no.tidly.modules.organization.dto.DepartmentResponse;
 import no.tidly.modules.organization.mapper.DepartmentMapper;
 import no.tidly.modules.organization.repository.DepartmentRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class GetDepartmentByIdUseCase {
 
     private final DepartmentRepository departmentRepository;
     private final DepartmentMapper departmentMapper;
-
-    public GetDepartmentByIdUseCase(DepartmentRepository departmentRepository, DepartmentMapper departmentMapper) {
-        this.departmentRepository = departmentRepository;
-        this.departmentMapper = departmentMapper;
-    }
 
     public DepartmentResponse execute(UUID id) {
         return this.departmentRepository.findById(id)

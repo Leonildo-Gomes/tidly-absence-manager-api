@@ -9,18 +9,14 @@ import no.tidly.core.exceptions.ResourceNotFoundException;
 import no.tidly.modules.organization.domain.DepartmentManagerHistoryEntity;
 import no.tidly.modules.organization.repository.DepartmentManagerHistoryRepository;
 import no.tidly.modules.organization.repository.DepartmentRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class GetDepartmentManagerHistoryUseCase {
 
     private final DepartmentRepository departmentRepository;
     private final DepartmentManagerHistoryRepository historyRepository;
-
-    public GetDepartmentManagerHistoryUseCase(DepartmentRepository departmentRepository,
-            DepartmentManagerHistoryRepository historyRepository) {
-        this.departmentRepository = departmentRepository;
-        this.historyRepository = historyRepository;
-    }
 
     public List<DepartmentManagerHistoryEntity> execute(UUID departmentId) {
         if (!this.departmentRepository.existsById(departmentId)) {

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import no.tidly.modules.billing.dto.PlanRequest;
 import no.tidly.modules.billing.dto.PlanResponse;
 import no.tidly.modules.billing.usecase.plan.CreatePlanUseCase;
@@ -20,15 +21,11 @@ import no.tidly.modules.billing.usecase.plan.GetPlansUseCase;
 @RestController
 @RequestMapping("/api/v1/plans")
 @Tag(name = "Billing - Plans", description = "Endpoints for managing subscription plans")
+@RequiredArgsConstructor
 public class PlanController {
 
     private final GetPlansUseCase getPlansUseCase;
     private final CreatePlanUseCase createPlanUseCase;
-
-    public PlanController(GetPlansUseCase getPlansUseCase, CreatePlanUseCase createPlanUseCase) {
-        this.getPlansUseCase = getPlansUseCase;
-        this.createPlanUseCase = createPlanUseCase;
-    }
 
     @GetMapping
     @Operation(summary = "Get all active plans")

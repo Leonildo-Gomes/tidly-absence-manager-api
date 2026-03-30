@@ -10,18 +10,14 @@ import no.tidly.modules.organization.dto.DepartmentManagerHistoryResponse;
 import no.tidly.modules.organization.dto.UpdateDepartmentManagerHistoryRequest;
 import no.tidly.modules.organization.repository.DepartmentManagerHistoryRepository;
 import no.tidly.modules.organization.repository.EmployeeRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class UpdateDepartmentManagerHistoryUseCase {
 
     private final DepartmentManagerHistoryRepository historyRepository;
     private final EmployeeRepository employeeRepository;
-
-    public UpdateDepartmentManagerHistoryUseCase(DepartmentManagerHistoryRepository historyRepository,
-            EmployeeRepository employeeRepository) {
-        this.historyRepository = historyRepository;
-        this.employeeRepository = employeeRepository;
-    }
 
     @Transactional
     public DepartmentManagerHistoryResponse execute(UUID id, UpdateDepartmentManagerHistoryRequest request) {

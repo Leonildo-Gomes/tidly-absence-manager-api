@@ -7,15 +7,13 @@ import org.springframework.stereotype.Service;
 import no.tidly.core.exceptions.ResourceNotFoundException;
 import no.tidly.modules.organization.domain.TeamEntity;
 import no.tidly.modules.organization.repository.TeamRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class DeleteTeamUseCase {
 
     private final TeamRepository repository;
-
-    public DeleteTeamUseCase(TeamRepository repository) {
-        this.repository = repository;
-    }
 
     public void execute(UUID id) {
         TeamEntity team = this.repository.findById(id)
