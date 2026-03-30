@@ -23,7 +23,9 @@ import no.tidly.modules.workflow.dto.AbsenceRequestResponse;
 import no.tidly.modules.workflow.usecase.absencerequest.CreateAbsenceRequestUseCase;
 import no.tidly.modules.workflow.usecase.absencerequest.DeleteAbsenceRequestUseCase;
 import no.tidly.modules.workflow.usecase.absencerequest.GetAbsenceRequestByIdUseCase;
+import no.tidly.modules.workflow.usecase.absencerequest.GetAbsenceRequestsByDepartmentUseCase;
 import no.tidly.modules.workflow.usecase.absencerequest.GetAbsenceRequestsByEmployeeAndYearUseCase;
+import no.tidly.modules.workflow.usecase.absencerequest.GetAbsenceRequestsByTeamUseCase;
 import no.tidly.modules.workflow.usecase.absencerequest.UpdateAbsenceRequestUseCase;
 
 @RestController
@@ -35,6 +37,8 @@ public class AbsenceRequestController {
     private final CreateAbsenceRequestUseCase createUseCase;
     private final GetAbsenceRequestByIdUseCase getByIdUseCase;
     private final GetAbsenceRequestsByEmployeeAndYearUseCase getByEmployeeAndYearUseCase;
+    private final GetAbsenceRequestsByTeamUseCase getByTeamUseCase;
+    private final GetAbsenceRequestsByDepartmentUseCase getByDepartmentUseCase;
     private final UpdateAbsenceRequestUseCase updateUseCase;
     private final DeleteAbsenceRequestUseCase deleteUseCase;
 
@@ -54,6 +58,22 @@ public class AbsenceRequestController {
     @GetMapping("/employee/year/{year}")
     public ResponseEntity<List<AbsenceRequestResponse>> getByEmployeeAndYear(@PathVariable Integer year) {
         return ResponseEntity.ok(this.getByEmployeeAndYearUseCase.execute(year));
+    }
+
+    @Operation(summary = "Get absence requests by team", description = "Returns all absence requests for all employees in a given team.")
+    @GetMapping("/team/{teamId}/year/{year}")
+    public ResponseEntity<List<AbsenceRequestResponse>> getByTeam(
+            @PathVariable UUID teamId,
+            @PathVariable Integer year) {
+        return ResponseEntity.ok(this.getByTeamUseCase.execute(teamId, year));
+    }
+
+    @Operation(summary = "Get absence requests by department", description = "Returns all absence requests for all employees in a given department.")
+    @GetMapping("/department/{departmentId}/year/{year}")
+    public ResponseEntity<List<AbsenceRequestResponse>> getByDepartment(
+            @PathVariable UUID departmentId,
+            @PathVariable Integer year) {
+        return ResponseEntity.ok(this.getByDepartmentUseCase.execute(departmentId, year));
     }
 
     @Operation(summary = "Update an absence request", description = "Updates an existing absence request with the provided details.")
