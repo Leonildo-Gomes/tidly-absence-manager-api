@@ -1,6 +1,7 @@
 package no.tidly.modules.configuration.repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,4 +16,8 @@ public interface HolidayRepository extends JpaRepository<HolidayEntity, UUID> {
 
     @Query("SELECT h FROM HolidayEntity h WHERE h.companyId = :companyId OR h.companyId IS NULL")
     List<HolidayEntity> findAllByCompanyIdOrGlobal(UUID companyId);
+
+    Optional<HolidayEntity> findByIdAndCompanyId(UUID id, UUID companyId);
+
+    boolean existsByIdAndCompanyId(UUID id, UUID companyId);
 }

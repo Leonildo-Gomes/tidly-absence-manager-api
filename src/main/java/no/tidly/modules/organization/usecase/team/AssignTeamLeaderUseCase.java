@@ -14,6 +14,7 @@ import no.tidly.modules.organization.mapper.TeamLeaderHistoryMapper;
 import no.tidly.modules.organization.repository.EmployeeRepository;
 import no.tidly.modules.organization.repository.TeamLeaderHistoryRepository;
 import no.tidly.modules.organization.repository.TeamRepository;
+import no.tidly.modules.organization.service.TenantService;
 
 @Service
 @RequiredArgsConstructor
@@ -23,13 +24,15 @@ public class AssignTeamLeaderUseCase {
         private final EmployeeRepository employeeRepository;
         private final TeamLeaderHistoryRepository historyRepository;
         private final TeamLeaderHistoryMapper mapper;
+        private final TenantService tenantService;
 
         @Transactional
         public TeamLeaderHistoryResponse execute(UUID teamId, AssignLeaderRequest request) {
-                var team = this.teamRepository.findById(teamId)
+                var company = this.tenantService.getCurrentCompanyByTenant();
+                var team = this.teamRepository.findByIdAndCompanyId(teamId, company.getId())
                                 .orElseThrow(() -> new ResourceNotFoundException("Team not found"));
 
-                var leader = this.employeeRepository.findById(request.leaderId())
+                var leader = this.employeeRepository.findByIdAndCompanyId(request.leaderId(), company.getId())
                                 .orElseThrow(() -> new ResourceNotFoundException("Leader (Employee) not found"));
 
                 this.historyRepository.findActiveByTeamId(teamId)

@@ -2,12 +2,14 @@
 package no.tidly.modules.configuration.domain;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +18,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import no.tidly.core.shared.BaseEntity;
 import no.tidly.modules.configuration.domain.enums.HolidayType;
+import no.tidly.modules.organization.domain.CompanyEntity;
 
 @Entity
 @Table(name = "holidays")
@@ -26,8 +29,9 @@ import no.tidly.modules.configuration.domain.enums.HolidayType;
 @AllArgsConstructor
 public class HolidayEntity extends BaseEntity {
 
-    @Column(name = "company_id")
-    private UUID companyId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id", nullable = false)
+    private CompanyEntity company;
 
     @Column(nullable = false)
     private LocalDate date;

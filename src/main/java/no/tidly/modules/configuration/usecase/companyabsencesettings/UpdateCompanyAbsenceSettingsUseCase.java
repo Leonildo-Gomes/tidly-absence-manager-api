@@ -13,6 +13,7 @@ import no.tidly.modules.configuration.dto.CompanyAbsenceSettingsRequest;
 import no.tidly.modules.configuration.dto.CompanyAbsenceSettingsResponse;
 import no.tidly.modules.configuration.mapper.CompanyAbsenceSettingsMapper;
 import no.tidly.modules.configuration.repository.CompanyAbsenceSettingsRepository;
+import no.tidly.modules.organization.service.TenantService;
 
 @Service
 @RequiredArgsConstructor
@@ -20,10 +21,12 @@ public class UpdateCompanyAbsenceSettingsUseCase {
 
     private final CompanyAbsenceSettingsRepository repository;
     private final CompanyAbsenceSettingsMapper mapper;
+    private final TenantService tenantService;
 
     @Transactional
     public CompanyAbsenceSettingsResponse execute(UUID id, CompanyAbsenceSettingsRequest request) {
-        CompanyAbsenceSettingsEntity entity = repository.findById(id)
+        var company = this.tenantService.getCurrentCompanyByTenant();
+        CompanyAbsenceSettingsEntity entity = repository.findByIdAndCompanyId(id, company.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("CompanyAbsenceSettings not found with id: " + id));
 
         Utils.copyNonNullProperties(request, entity);

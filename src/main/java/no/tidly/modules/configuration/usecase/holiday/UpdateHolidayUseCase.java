@@ -13,6 +13,7 @@ import no.tidly.modules.configuration.dto.HolidayResponse;
 import no.tidly.modules.configuration.dto.UpdateHolidayRequest;
 import no.tidly.modules.configuration.mapper.HolidayMapper;
 import no.tidly.modules.configuration.repository.HolidayRepository;
+import no.tidly.modules.organization.service.TenantService;
 
 @Service
 @RequiredArgsConstructor
@@ -20,10 +21,12 @@ public class UpdateHolidayUseCase {
 
     private final HolidayRepository repository;
     private final HolidayMapper mapper;
+    private final TenantService tenantService;
 
     @Transactional
     public HolidayResponse execute(UUID id, UpdateHolidayRequest request) {
-        HolidayEntity entity = repository.findById(id)
+        var company = this.tenantService.getCurrentCompanyByTenant();
+        HolidayEntity entity = repository.findByIdAndCompanyId(id, company.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Holiday not found with id: " + id));
 
         Utils.copyNonNullProperties(request, entity);

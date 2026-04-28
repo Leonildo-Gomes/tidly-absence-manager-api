@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.RequiredArgsConstructor;
 import no.tidly.core.exceptions.ResourceNotFoundException;
 import no.tidly.modules.organization.domain.DepartmentManagerHistoryEntity;
 import no.tidly.modules.organization.dto.AssignManagerRequest;
@@ -13,7 +14,7 @@ import no.tidly.modules.organization.mapper.DepartmentManagerHistoryMapper;
 import no.tidly.modules.organization.repository.DepartmentManagerHistoryRepository;
 import no.tidly.modules.organization.repository.DepartmentRepository;
 import no.tidly.modules.organization.repository.EmployeeRepository;
-import lombok.RequiredArgsConstructor;
+import no.tidly.modules.organization.service.TenantService;
 
 @Service
 @RequiredArgsConstructor
@@ -23,13 +24,15 @@ public class AssignDepartmentManagerUseCase {
         private final EmployeeRepository employeeRepository;
         private final DepartmentManagerHistoryRepository historyRepository;
         private final DepartmentManagerHistoryMapper mapper;
+        private final TenantService tenantService;
 
         @Transactional
         public DepartmentManagerHistoryResponse execute(UUID departmentId, AssignManagerRequest request) {
-                var department = this.departmentRepository.findById(departmentId)
+                var company = this.tenantService.getCurrentCompanyByTenant();
+                var department = this.departmentRepository.findByIdAndCompanyId(departmentId, company.getId())
                                 .orElseThrow(() -> new ResourceNotFoundException("Department not found"));
 
-                var manager = this.employeeRepository.findById(request.managerId())
+                var manager = this.employeeRepository.findByIdAndCompanyId(request.managerId(), company.getId())
                                 .orElseThrow(() -> new ResourceNotFoundException("Manager (Employee) not found"));
 
                 // 1. Close current active manager tenure if exists

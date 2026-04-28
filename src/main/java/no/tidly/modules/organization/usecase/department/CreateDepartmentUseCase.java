@@ -8,24 +8,24 @@ import no.tidly.modules.organization.domain.DepartmentEntity;
 import no.tidly.modules.organization.dto.DepartmentRequest;
 import no.tidly.modules.organization.dto.DepartmentResponse;
 import no.tidly.modules.organization.mapper.DepartmentMapper;
-import no.tidly.modules.organization.repository.CompanyRepository;
 import no.tidly.modules.organization.repository.DepartmentRepository;
+import no.tidly.modules.organization.service.TenantService;
 
 @Service
 @RequiredArgsConstructor
 public class CreateDepartmentUseCase {
 
     private final DepartmentRepository departmentRepository;
-    private final CompanyRepository companyRepository;
     private final DepartmentMapper departmentMapper;
+    private final TenantService tenantService;
 
     public DepartmentResponse execute(DepartmentRequest request) {
-        var company = this.companyRepository.findById(request.companyId())
-                .orElseThrow(() -> new ResourceNotFoundException("Company not found"));
+        var company = this.tenantService.getCurrentCompanyByTenant();
 
         DepartmentEntity parentDepartment = null;
         if (request.parentDepartmentId() != null) {
-            parentDepartment = this.departmentRepository.findById(request.parentDepartmentId())
+            parentDepartment = this.departmentRepository
+                    .findByIdAndCompanyId(request.parentDepartmentId(), company.getId())
                     .orElseThrow(() -> new ResourceNotFoundException("Parent department not found"));
         }
 

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import no.tidly.core.exceptions.ResourceNotFoundException;
 import no.tidly.core.security.SecurityContextService;
 import no.tidly.modules.organization.repository.EmployeeRepository;
+import no.tidly.modules.organization.service.TenantService;
 import no.tidly.modules.workflow.dto.AbsenceRequestResponse;
 import no.tidly.modules.workflow.mapper.AbsenceRequestMapper;
 import no.tidly.modules.workflow.repository.AbsenceRequestRepository;
@@ -22,17 +23,19 @@ public class GetAbsenceRequestsByEmployeeAndYearUseCase {
     private final AbsenceRequestMapper mapper;
     private final SecurityContextService securityContextService;
     private final EmployeeRepository employeeRepository;
+    private final TenantService tenantService;
 
     @Transactional(readOnly = true)
     public List<AbsenceRequestResponse> execute(Integer year) {
+        var company = this.tenantService.getCurrentCompanyByTenant();
         var currentUserId = securityContextService.getCurrentUserId();
         if (currentUserId == null) {
             throw new AccessDeniedException("You don't have permission to access this resource");
         }
-        var employee = employeeRepository.findByUserId(currentUserId)
+        var employee = employeeRepository.findByUserIdAndCompanyId(currentUserId, company.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id: " + currentUserId));
 
-        var entities = repository.findByEmployeeIdAndYear(employee.getId(), year);
+        var entities = repository.findByEmployeeIdAndYearAndCompanyId(employee.getId(), year, company.getId());
         return entities.stream()
                 .map(mapper::toResponse)
                 .toList();

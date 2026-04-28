@@ -11,6 +11,7 @@ import no.tidly.modules.configuration.domain.HolidayEntity;
 import no.tidly.modules.configuration.dto.HolidayResponse;
 import no.tidly.modules.configuration.mapper.HolidayMapper;
 import no.tidly.modules.configuration.repository.HolidayRepository;
+import no.tidly.modules.organization.service.TenantService;
 
 @Service
 @RequiredArgsConstructor
@@ -18,10 +19,12 @@ public class GetHolidayByIdUseCase {
 
     private final HolidayRepository repository;
     private final HolidayMapper mapper;
+    private final TenantService tenantService;
 
     @Transactional(readOnly = true)
     public HolidayResponse execute(UUID id) {
-        HolidayEntity entity = repository.findById(id)
+        var company = this.tenantService.getCurrentCompanyByTenant();
+        HolidayEntity entity = repository.findByIdAndCompanyId(id, company.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Holiday not found with id: " + id));
         return mapper.toResponse(entity);
     }
