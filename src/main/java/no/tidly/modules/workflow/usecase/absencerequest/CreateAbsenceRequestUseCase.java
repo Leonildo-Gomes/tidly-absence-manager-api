@@ -10,6 +10,7 @@ import no.tidly.modules.configuration.domain.AbsenceTypeEntity;
 import no.tidly.modules.configuration.repository.AbsenceTypeRepository;
 import no.tidly.modules.organization.domain.EmployeeEntity;
 import no.tidly.modules.organization.repository.EmployeeRepository;
+import no.tidly.modules.organization.service.TenantService;
 import no.tidly.modules.workflow.domain.AbsenceRequestEntity;
 import no.tidly.modules.workflow.dto.AbsenceRequestRequest;
 import no.tidly.modules.workflow.dto.AbsenceRequestResponse;
@@ -25,21 +26,24 @@ public class CreateAbsenceRequestUseCase {
         private final EmployeeRepository employeeRepository;
         private final AbsenceTypeRepository absenceTypeRepository;
         private final SecurityContextService securityContextService;
+        private final TenantService tenantService;
 
         @Transactional
         public AbsenceRequestResponse execute(AbsenceRequestRequest request) {
+                var company = this.tenantService.getCurrentCompanyByTenant();
                 String clerkUserId = this.securityContextService.getCurrentUserId();
                 if (clerkUserId == null || clerkUserId.isBlank()) {
                         throw new ResourceNotFoundException("Clerk user not found");
                 }
 
-                EmployeeEntity employee = this.employeeRepository.findByUserId(clerkUserId)
+                EmployeeEntity employee = this.employeeRepository.findByUserIdAndCompanyId(clerkUserId, company.getId())
                                 .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
                 AbsenceTypeEntity absenceType = this.absenceTypeRepository.findById(request.absenceTypeId())
                                 .orElseThrow(() -> new ResourceNotFoundException("Absence type not found"));
 
                 AbsenceRequestEntity entity = AbsenceRequestEntity.builder()
                                 .employee(employee)
+                                .company(company)
                                 .absenceType(absenceType)
                                 .year(request.year())
                                 .startDate(request.startDate())

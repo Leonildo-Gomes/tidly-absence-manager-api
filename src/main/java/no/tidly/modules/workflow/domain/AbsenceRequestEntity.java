@@ -19,6 +19,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import no.tidly.core.shared.BaseEntity;
 import no.tidly.modules.configuration.domain.AbsenceTypeEntity;
+import no.tidly.modules.organization.domain.CompanyEntity;
 import no.tidly.modules.organization.domain.EmployeeEntity;
 import no.tidly.modules.workflow.domain.enums.AbsenceStatus;
 
@@ -37,6 +38,10 @@ public class AbsenceRequestEntity extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "absence_type_id", nullable = false)
     private AbsenceTypeEntity absenceType;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id", nullable = false)
+    private CompanyEntity company;
 
     @Column(name = "year", nullable = false)
     private Integer year;

@@ -1,6 +1,7 @@
 package no.tidly.modules.workflow.repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,5 +24,10 @@ public interface AbsenceRequestRepository extends JpaRepository<AbsenceRequestEn
     List<AbsenceRequestEntity> findAllByTeamIdAndYear(@Param("teamId") UUID teamId, @Param("year") Integer year);
 
     @Query("SELECT ar FROM AbsenceRequestEntity ar JOIN ar.employee e WHERE e.team.department.id = :departmentId AND ar.year = :year")
-    List<AbsenceRequestEntity> findAllByDepartmentIdAndYear(@Param("departmentId") UUID departmentId, @Param("year") Integer year);
+    List<AbsenceRequestEntity> findAllByDepartmentIdAndYear(@Param("departmentId") UUID departmentId,
+            @Param("year") Integer year);
+
+    Optional<AbsenceRequestEntity> findByIdAndCompanyId(UUID id, UUID companyId);
+
+    boolean existsByIdAndCompanyId(UUID id, UUID companyId);
 }
