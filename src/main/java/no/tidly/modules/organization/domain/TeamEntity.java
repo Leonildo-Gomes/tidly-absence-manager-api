@@ -28,6 +28,10 @@ public class TeamEntity extends BaseEntity {
     @JoinColumn(name = "department_id", nullable = false)
     private DepartmentEntity department;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id", nullable = false)
+    private CompanyEntity company;
+
     @Column(nullable = false, length = 100)
     private String name;
 
