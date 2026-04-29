@@ -18,7 +18,7 @@ public interface AbsenceBalanceRepository extends JpaRepository<AbsenceBalanceEn
         Optional<AbsenceBalanceEntity> findByEmployeeIdAndYearAndAbsenceTypeId(UUID employeeId, Integer year,
                         UUID absenceTypeId);
 
-        @Query("SELECT ab FROM AbsenceBalanceEntity ab WHERE ab.employee.company.id= :companyId AND ab.employee.id = :employeeId")
+        @Query("SELECT ab FROM AbsenceBalanceEntity ab WHERE ab.employee.company.id = :companyId AND ab.employee.id = :employeeId")
         List<AbsenceBalanceEntity> findByEmployeeIdAndCompanyId(@Param("employeeId") UUID employeeId,
                         @Param("companyId") UUID companyId);
 }

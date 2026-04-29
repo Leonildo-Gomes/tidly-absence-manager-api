@@ -88,7 +88,7 @@ public class EmployeeController {
 
     @Operation(summary = "Assign a job title", description = "Assigns a job title to an employee.")
     @PostMapping("/{employeeId}/job-titles")
-    public ResponseEntity<EmployeeJobTitleResponse> assign(@PathVariable String employeeId,
+    public ResponseEntity<EmployeeJobTitleResponse> assign(@PathVariable UUID employeeId,
             @Valid @RequestBody EmployeeJobTitleRequest request) {
 
         var response = assignJobTitleUseCase.execute(employeeId, request);

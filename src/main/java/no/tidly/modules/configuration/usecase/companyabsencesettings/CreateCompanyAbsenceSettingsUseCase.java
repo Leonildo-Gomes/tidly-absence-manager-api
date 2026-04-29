@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import no.tidly.core.exceptions.ResourceNotFoundException;
-import no.tidly.core.security.SecurityContextService;
 import no.tidly.modules.configuration.domain.AbsenceTypeEntity;
 import no.tidly.modules.configuration.domain.CompanyAbsenceSettingsEntity;
 import no.tidly.modules.configuration.dto.CompanyAbsenceSettingsRequest;
@@ -14,7 +13,7 @@ import no.tidly.modules.configuration.mapper.CompanyAbsenceSettingsMapper;
 import no.tidly.modules.configuration.repository.AbsenceTypeRepository;
 import no.tidly.modules.configuration.repository.CompanyAbsenceSettingsRepository;
 import no.tidly.modules.organization.domain.CompanyEntity;
-import no.tidly.modules.organization.repository.CompanyRepository;
+import no.tidly.modules.organization.service.TenantService;
 
 @Service
 @RequiredArgsConstructor
@@ -22,19 +21,12 @@ public class CreateCompanyAbsenceSettingsUseCase {
 
     private final CompanyAbsenceSettingsRepository repository;
     private final CompanyAbsenceSettingsMapper mapper;
-    private final SecurityContextService securityContextService;
-    private final CompanyRepository companyRepository;
     private final AbsenceTypeRepository absenceTypeRepository;
+    private final TenantService tenantService;
 
     @Transactional
     public CompanyAbsenceSettingsResponse execute(CompanyAbsenceSettingsRequest request) {
-        String activeClerkOrgId = securityContextService.getCurrentOrganizationId();
-        if (activeClerkOrgId == null) {
-            throw new ResourceNotFoundException("Company not found");
-        }
-
-        CompanyEntity company = companyRepository.findByClerkOrgId(activeClerkOrgId)
-                .orElseThrow(() -> new ResourceNotFoundException("Company not found"));
+        CompanyEntity company = this.tenantService.getCurrentCompanyByTenant();
 
         AbsenceTypeEntity absenceType = absenceTypeRepository.findById(request.absenceTypeId())
                 .orElseThrow(() -> new ResourceNotFoundException("Absence type not found"));
