@@ -5,11 +5,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import no.tidly.core.exceptions.ResourceNotFoundException;
-import no.tidly.core.security.SecurityContextService;
 import no.tidly.modules.configuration.domain.AbsenceTypeEntity;
 import no.tidly.modules.configuration.repository.AbsenceTypeRepository;
 import no.tidly.modules.organization.domain.EmployeeEntity;
-import no.tidly.modules.organization.repository.EmployeeRepository;
 import no.tidly.modules.organization.service.TenantService;
 import no.tidly.modules.workflow.domain.AbsenceRequestEntity;
 import no.tidly.modules.workflow.dto.AbsenceRequestRequest;
@@ -23,17 +21,13 @@ public class CreateAbsenceRequestUseCase {
 
         private final AbsenceRequestRepository repository;
         private final AbsenceRequestMapper mapper;
-        private final EmployeeRepository employeeRepository;
         private final AbsenceTypeRepository absenceTypeRepository;
-        private final SecurityContextService securityContextService;
         private final TenantService tenantService;
 
         @Transactional
         public AbsenceRequestResponse execute(AbsenceRequestRequest request) {
                 var company = this.tenantService.getCurrentCompanyByTenant();
-                var userId = this.securityContextService.getCurrentUserId();
-                EmployeeEntity employee = this.employeeRepository.findByUserIdAndCompanyId(userId, company.getId())
-                                .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
+                EmployeeEntity employee = this.tenantService.getCurrentEmployee();
                 AbsenceTypeEntity absenceType = this.absenceTypeRepository.findById(request.absenceTypeId())
                                 .orElseThrow(() -> new ResourceNotFoundException("Absence type not found"));
 
