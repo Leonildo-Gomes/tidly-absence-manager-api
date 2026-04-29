@@ -4,11 +4,8 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import no.tidly.core.exceptions.ResourceNotFoundException;
-import no.tidly.core.security.SecurityContextService;
 import no.tidly.modules.organization.dto.EmployeeResponse;
 import no.tidly.modules.organization.mapper.EmployeeMapper;
-import no.tidly.modules.organization.repository.EmployeeRepository;
 import no.tidly.modules.organization.service.TenantService;
 
 @Slf4j
@@ -16,20 +13,12 @@ import no.tidly.modules.organization.service.TenantService;
 @RequiredArgsConstructor
 public class GetMyProfileUseCase {
 
-    private final EmployeeRepository employeeRepository;
-    private final SecurityContextService securityContextService;
-    private final EmployeeMapper mapper;
     private final TenantService tenantService;
+    private final EmployeeMapper mapper;
 
     public EmployeeResponse execute() {
-        var company = this.tenantService.getCurrentCompanyByTenant();
-        var userId = securityContextService.getCurrentUserId();
-        log.info("Fetching profile for userId={}", userId);
-
-        var employee = employeeRepository.findByUserIdAndCompanyId(userId, company.getId())
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Employee not found for userId=" + userId));
-
+        var employee = tenantService.getCurrentEmployee();
+        log.info("Fetching profile for userId={}", employee.getUserId());
         return mapper.toResponse(employee);
     }
 }

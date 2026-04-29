@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import no.tidly.core.exceptions.ResourceNotFoundException;
 import no.tidly.core.shared.Utils;
+import no.tidly.modules.organization.service.TenantService;
 import no.tidly.modules.workflow.domain.AbsenceRequestEntity;
 import no.tidly.modules.workflow.dto.AbsenceRequestRequest;
 import no.tidly.modules.workflow.dto.AbsenceRequestResponse;
@@ -20,10 +21,12 @@ public class UpdateAbsenceRequestUseCase {
 
     private final AbsenceRequestRepository repository;
     private final AbsenceRequestMapper mapper;
+    private final TenantService tenantService;
 
     @Transactional
     public AbsenceRequestResponse execute(UUID id, AbsenceRequestRequest request) {
-        AbsenceRequestEntity entity = this.repository.findById(id)
+        var company = this.tenantService.getCurrentCompanyByTenant();
+        AbsenceRequestEntity entity = this.repository.findByIdAndCompanyId(id, company.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("AbsenceRequest not found with id: " + id));
 
         Utils.copyNonNullProperties(request, entity);

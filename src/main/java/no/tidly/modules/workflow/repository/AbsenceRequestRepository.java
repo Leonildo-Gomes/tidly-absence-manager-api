@@ -20,12 +20,13 @@ public interface AbsenceRequestRepository extends JpaRepository<AbsenceRequestEn
 
     List<AbsenceRequestEntity> findByEmployeeIdAndYearAndCompanyId(UUID employeeId, Integer year, UUID companyId);
 
-    @Query("SELECT ar FROM AbsenceRequestEntity ar JOIN ar.employee e WHERE e.team.id = :teamId AND ar.year = :year")
-    List<AbsenceRequestEntity> findAllByTeamIdAndYear(@Param("teamId") UUID teamId, @Param("year") Integer year);
+    @Query("SELECT ar FROM AbsenceRequestEntity ar JOIN ar.employee e WHERE e.team.id = :teamId AND ar.year = :year AND ar.company.id = :companyId")
+    List<AbsenceRequestEntity> findAllByTeamIdAndYearAndCompanyId(@Param("teamId") UUID teamId,
+            @Param("year") Integer year, @Param("companyId") UUID companyId);
 
-    @Query("SELECT ar FROM AbsenceRequestEntity ar JOIN ar.employee e WHERE e.team.department.id = :departmentId AND ar.year = :year")
-    List<AbsenceRequestEntity> findAllByDepartmentIdAndYear(@Param("departmentId") UUID departmentId,
-            @Param("year") Integer year);
+    @Query("SELECT ar FROM AbsenceRequestEntity ar JOIN ar.employee e WHERE e.team.department.id = :departmentId AND ar.year = :year AND ar.company.id = :companyId")
+    List<AbsenceRequestEntity> findAllByDepartmentIdAndYearAndCompanyId(@Param("departmentId") UUID departmentId,
+            @Param("year") Integer year, @Param("companyId") UUID companyId);
 
     Optional<AbsenceRequestEntity> findByIdAndCompanyId(UUID id, UUID companyId);
 

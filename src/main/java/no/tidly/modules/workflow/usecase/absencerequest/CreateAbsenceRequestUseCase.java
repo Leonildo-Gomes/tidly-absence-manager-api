@@ -31,12 +31,12 @@ public class CreateAbsenceRequestUseCase {
         @Transactional
         public AbsenceRequestResponse execute(AbsenceRequestRequest request) {
                 var company = this.tenantService.getCurrentCompanyByTenant();
-                String clerkUserId = this.securityContextService.getCurrentUserId();
-                if (clerkUserId == null || clerkUserId.isBlank()) {
-                        throw new ResourceNotFoundException("Clerk user not found");
+                var userId = this.securityContextService.getCurrentUserId();
+                if (userId == null || userId.isBlank()) {
+                        throw new ResourceNotFoundException("User not found");
                 }
 
-                EmployeeEntity employee = this.employeeRepository.findByUserIdAndCompanyId(clerkUserId, company.getId())
+                EmployeeEntity employee = this.employeeRepository.findByUserIdAndCompanyId(userId, company.getId())
                                 .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
                 AbsenceTypeEntity absenceType = this.absenceTypeRepository.findById(request.absenceTypeId())
                                 .orElseThrow(() -> new ResourceNotFoundException("Absence type not found"));
