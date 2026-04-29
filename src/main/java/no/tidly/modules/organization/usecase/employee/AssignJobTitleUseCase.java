@@ -1,7 +1,5 @@
 package no.tidly.modules.organization.usecase.employee;
 
-import java.util.UUID;
-
 import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -13,6 +11,7 @@ import no.tidly.modules.organization.mapper.EmployeeJobTitleMapper;
 import no.tidly.modules.organization.repository.EmployeeJobTitleRepository;
 import no.tidly.modules.organization.repository.EmployeeRepository;
 import no.tidly.modules.organization.repository.JobTitleRepository;
+import no.tidly.modules.organization.service.TenantService;
 
 @Service
 @RequiredArgsConstructor
@@ -21,14 +20,16 @@ public class AssignJobTitleUseCase {
         private final EmployeeJobTitleRepository repository;
         private final JobTitleRepository jobTitleRepository;
         private final EmployeeRepository employeeRepository;
+        private final TenantService tenantService;
         private final EmployeeJobTitleMapper mapper;
 
-        public EmployeeJobTitleResponse execute(UUID employeeId, EmployeeJobTitleRequest request) {
+        public EmployeeJobTitleResponse execute(String employeeId, EmployeeJobTitleRequest request) {
+                var company = this.tenantService.getCurrentCompanyByTenant();
                 var jobTitle = jobTitleRepository.findById(request.jobTitleId())
                                 .orElseThrow(() -> new EntityNotFoundException(
                                                 "JobTitle not found with id: " + request.jobTitleId()));
 
-                var employee = employeeRepository.findById(employeeId)
+                var employee = employeeRepository.findByUserIdAndCompanyId(employeeId, company.getId())
                                 .orElseThrow(() -> new EntityNotFoundException(
                                                 "Employee not found with id: " + employeeId));
 

@@ -1,7 +1,6 @@
 package no.tidly.modules.configuration.usecase.absencetype;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +20,6 @@ public class GetAllAbsenceTypesUseCase {
     @Transactional(readOnly = true)
     public List<AbsenceTypeResponse> execute() {
         return absenceTypeRepository.findAll().stream()
-                .map(mapper::toResponse)
-                .collect(Collectors.toList());
+                .map(mapper::toResponse).toList();
     }
 }

@@ -2,7 +2,6 @@ package no.tidly.modules.workflow.usecase.absenceapproval;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +24,6 @@ public class GetAbsenceApprovalsByRequestUseCase {
     public List<AbsenceApprovalResponse> execute(UUID absenceRequestId) {
         var company = this.tenantService.getCurrentCompanyByTenant();
         return this.repository.findByAbsenceRequestIdAndCompanyId(absenceRequestId, company.getId()).stream()
-                .map(mapper::toResponse)
-                .collect(Collectors.toList());
+                .map(mapper::toResponse).toList();
     }
 }

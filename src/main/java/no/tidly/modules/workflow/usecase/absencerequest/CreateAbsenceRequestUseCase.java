@@ -32,10 +32,6 @@ public class CreateAbsenceRequestUseCase {
         public AbsenceRequestResponse execute(AbsenceRequestRequest request) {
                 var company = this.tenantService.getCurrentCompanyByTenant();
                 var userId = this.securityContextService.getCurrentUserId();
-                if (userId == null || userId.isBlank()) {
-                        throw new ResourceNotFoundException("User not found");
-                }
-
                 EmployeeEntity employee = this.employeeRepository.findByUserIdAndCompanyId(userId, company.getId())
                                 .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
                 AbsenceTypeEntity absenceType = this.absenceTypeRepository.findById(request.absenceTypeId())
