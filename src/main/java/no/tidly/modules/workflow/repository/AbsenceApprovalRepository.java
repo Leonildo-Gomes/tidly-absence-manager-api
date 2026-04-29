@@ -12,15 +12,15 @@ import no.tidly.modules.workflow.domain.AbsenceApprovalEntity;
 
 @Repository
 public interface AbsenceApprovalRepository extends JpaRepository<AbsenceApprovalEntity, UUID> {
-    List<AbsenceApprovalEntity> findByAbsenceRequestId(UUID absenceRequestId);
+        List<AbsenceApprovalEntity> findByAbsenceRequestId(UUID absenceRequestId);
 
-    List<AbsenceApprovalEntity> findByApproverId(UUID approverId);
+        List<AbsenceApprovalEntity> findByApproverId(UUID approverId);
 
-    @Query("SELECT aa FROM AbsenceApprovalEntity aa "
-            + "JOIN aa.absenceRequest ar "
-            + "JOIN ar.employee e "
-            + "WHERE aa.absenceRequestId = :absenceRequestId "
-            + "AND e.company.id = :companyId")
-    List<AbsenceApprovalEntity> findByAbsenceRequestIdAndCompanyId(@Param("absenceRequestId") UUID absenceRequestId,
-            @Param("companyId") UUID companyId);
+        @Query("SELECT aa FROM AbsenceApprovalEntity aa "
+                        + "JOIN aa.absenceRequest ar "
+                        + "JOIN ar.employee e "
+                        + "WHERE ar.id = :absenceRequestId "
+                        + "AND e.company.id = :companyId")
+        List<AbsenceApprovalEntity> findByAbsenceRequestIdAndCompanyId(@Param("absenceRequestId") UUID absenceRequestId,
+                        @Param("companyId") UUID companyId);
 }

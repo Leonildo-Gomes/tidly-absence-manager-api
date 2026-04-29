@@ -14,7 +14,7 @@ import no.tidly.modules.configuration.domain.HolidayEntity;
 public interface HolidayRepository extends JpaRepository<HolidayEntity, UUID> {
     List<HolidayEntity> findAllByCompanyId(UUID companyId);
 
-    @Query("SELECT h FROM HolidayEntity h WHERE h.companyId = :companyId OR h.companyId IS NULL")
+    @Query("SELECT h FROM HolidayEntity h WHERE h.company.id = :companyId OR h.company.id IS NULL")
     List<HolidayEntity> findAllByCompanyIdOrGlobal(UUID companyId);
 
     Optional<HolidayEntity> findByIdAndCompanyId(UUID id, UUID companyId);

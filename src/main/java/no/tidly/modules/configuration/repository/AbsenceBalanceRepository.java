@@ -13,12 +13,12 @@ import no.tidly.modules.configuration.domain.AbsenceBalanceEntity;
 
 @Repository
 public interface AbsenceBalanceRepository extends JpaRepository<AbsenceBalanceEntity, UUID> {
-    List<AbsenceBalanceEntity> findByEmployeeId(UUID employeeId);
+        List<AbsenceBalanceEntity> findByEmployeeId(UUID employeeId);
 
-    Optional<AbsenceBalanceEntity> findByEmployeeIdAndYearAndAbsenceTypeId(UUID employeeId, Integer year,
-            UUID absenceTypeId);
+        Optional<AbsenceBalanceEntity> findByEmployeeIdAndYearAndAbsenceTypeId(UUID employeeId, Integer year,
+                        UUID absenceTypeId);
 
-    @Query("SELECT ab FROM AbsenceBalanceEntity ab WHERE ab.employee.companyId = :companyId AND ab.employee.id = :employeeId")
-    List<AbsenceBalanceEntity> findByEmployeeIdAndCompanyId(@Param("employeeId") UUID employeeId,
-            @Param("companyId") UUID companyId);
+        @Query("SELECT ab FROM AbsenceBalanceEntity ab WHERE ab.employee.company.id= :companyId AND ab.employee.id = :employeeId")
+        List<AbsenceBalanceEntity> findByEmployeeIdAndCompanyId(@Param("employeeId") UUID employeeId,
+                        @Param("companyId") UUID companyId);
 }
