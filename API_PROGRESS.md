@@ -77,9 +77,9 @@ Marque com `[x]` o que já foi implementado e testado.
 
 ### 📝 Absence Requests (Pedidos)
 
-- [ ] **POST** `/requests` - Criar pedido de ausência (Validação de saldo)
-- [ ] **GET** `/requests` - Listar meus pedidos (Employee) ou da equipe (Manager)
-- [ ] **GET** `/requests/{id}` - Ver detalhes do pedido
+- [ x] **POST** `/requests` - Criar pedido de ausência (Validação de saldo)
+- [ x] **GET** `/requests` - Listar meus pedidos (Employee) ou da equipe (Manager)
+- [ x] **GET** `/requests/{id}` - Ver detalhes do pedido
 - [ ] **DELETE** `/requests/{id}` - Cancelar pedido (se ainda pendente)
 
 ### ✅ Approval (Aprovação)

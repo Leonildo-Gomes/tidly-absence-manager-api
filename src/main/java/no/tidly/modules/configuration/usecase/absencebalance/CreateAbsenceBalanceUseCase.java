@@ -32,7 +32,7 @@ public class CreateAbsenceBalanceUseCase {
         public AbsenceBalanceResponse execute(AbsenceBalanceRequest request) {
                 var company = this.tenantService.getCurrentCompanyByTenant();
                 EmployeeEntity employee = employeeRepository
-                                .findByUserIdAndCompanyId(request.employeeId(), company.getId())
+                                .findByIdAndCompanyId(request.employeeId(), company.getId())
                                 .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
 
                 AbsenceTypeEntity absenceType = absenceTypeRepository.findById(request.absenceTypeId())

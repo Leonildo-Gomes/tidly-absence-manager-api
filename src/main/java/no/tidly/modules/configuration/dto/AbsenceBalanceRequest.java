@@ -7,10 +7,10 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 
 public record AbsenceBalanceRequest(
-        @NotNull String employeeId,
-        @NotNull UUID absenceTypeId,
-        @NotNull Integer year,
-        @NotNull @DecimalMin("0.0") BigDecimal totalEntitled,
-        @DecimalMin("0.0") BigDecimal usedDays,
-        @DecimalMin("0.0") BigDecimal pendingDays) {
+                @NotNull UUID employeeId,
+                @NotNull UUID absenceTypeId,
+                @NotNull Integer year,
+                @NotNull @DecimalMin("0.0") BigDecimal totalEntitled,
+                @DecimalMin("0.0") BigDecimal usedDays,
+                @DecimalMin("0.0") BigDecimal pendingDays) {
 }
