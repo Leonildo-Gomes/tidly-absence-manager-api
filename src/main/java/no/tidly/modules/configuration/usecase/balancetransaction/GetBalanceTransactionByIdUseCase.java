@@ -11,6 +11,7 @@ import no.tidly.modules.configuration.domain.BalanceTransactionEntity;
 import no.tidly.modules.configuration.dto.BalanceTransactionResponse;
 import no.tidly.modules.configuration.mapper.BalanceTransactionMapper;
 import no.tidly.modules.configuration.repository.BalanceTransactionRepository;
+import no.tidly.modules.organization.service.TenantService;
 
 @Service
 @RequiredArgsConstructor
@@ -18,12 +19,13 @@ public class GetBalanceTransactionByIdUseCase {
 
     private final BalanceTransactionRepository repository;
     private final BalanceTransactionMapper mapper;
+    private final TenantService tenantService;
 
     @Transactional(readOnly = true)
     public BalanceTransactionResponse execute(UUID id) {
-        BalanceTransactionEntity entity = repository.findById(id)
+        var company = this.tenantService.getCurrentCompanyByTenant();
+        BalanceTransactionEntity entity = repository.findByIdAndCompanyId(id, company.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("BalanceTransaction not found with id: " + id));
-
         return mapper.toResponse(entity);
     }
 }

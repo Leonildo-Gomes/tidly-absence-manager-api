@@ -14,6 +14,7 @@ import no.tidly.modules.configuration.repository.AbsenceTypeRepository;
 import no.tidly.modules.configuration.repository.BalanceTransactionRepository;
 import no.tidly.modules.organization.domain.EmployeeEntity;
 import no.tidly.modules.organization.repository.EmployeeRepository;
+import no.tidly.modules.organization.service.TenantService;
 
 @Service
 @RequiredArgsConstructor
@@ -23,17 +24,21 @@ public class CreateBalanceTransactionUseCase {
         private final BalanceTransactionMapper mapper;
         private final EmployeeRepository employeeRepository;
         private final AbsenceTypeRepository absenceTypeRepository;
+        private final TenantService tenantService;
 
         @Transactional
         public BalanceTransactionResponse execute(BalanceTransactionRequest request) {
-                EmployeeEntity employee = employeeRepository.findById(request.employeeId())
+                var company = this.tenantService.getCurrentCompanyByTenant();
+                EmployeeEntity employee = employeeRepository.findByIdAndCompanyId(request.employeeId(), company.getId())
                                 .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
 
-                AbsenceTypeEntity absenceType = absenceTypeRepository.findById(request.absenceTypeId())
+                AbsenceTypeEntity absenceType = absenceTypeRepository
+                                .findByIdAndCompanyId(request.absenceTypeId(), company.getId())
                                 .orElseThrow(() -> new ResourceNotFoundException("Absence type not found"));
 
                 BalanceTransactionEntity entity = BalanceTransactionEntity.builder()
                                 .employee(employee)
+                                .company(company)
                                 .absenceType(absenceType)
                                 .year(request.year())
                                 .amount(request.amount())

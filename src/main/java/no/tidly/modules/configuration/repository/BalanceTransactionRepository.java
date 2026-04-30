@@ -1,6 +1,7 @@
 package no.tidly.modules.configuration.repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,4 +15,10 @@ public interface BalanceTransactionRepository extends JpaRepository<BalanceTrans
     // Integer year);
 
     List<BalanceTransactionEntity> findByEmployeeId(UUID employeeId);
+
+    Optional<BalanceTransactionEntity> findByIdAndCompanyId(UUID id, UUID companyId);
+
+    boolean existsByIdAndCompanyId(UUID id, UUID companyId);
+
+    List<BalanceTransactionEntity> findByEmployeeIdAndCompanyId(UUID employeeId, UUID id);
 }
