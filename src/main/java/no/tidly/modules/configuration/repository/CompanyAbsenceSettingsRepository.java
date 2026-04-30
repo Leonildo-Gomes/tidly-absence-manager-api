@@ -16,4 +16,6 @@ public interface CompanyAbsenceSettingsRepository extends JpaRepository<CompanyA
     Optional<CompanyAbsenceSettingsEntity> findByIdAndCompanyId(UUID id, UUID companyId);
 
     boolean existsByIdAndCompanyId(UUID id, UUID companyId);
+
+    Optional<CompanyAbsenceSettingsEntity> findByCompanyIdAndAbsenceTypeId(UUID companyId, UUID absenceTypeId);
 }

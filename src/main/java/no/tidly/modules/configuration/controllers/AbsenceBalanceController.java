@@ -25,7 +25,10 @@ import no.tidly.modules.configuration.usecase.absencebalance.CreateAbsenceBalanc
 import no.tidly.modules.configuration.usecase.absencebalance.DeleteAbsenceBalanceUseCase;
 import no.tidly.modules.configuration.usecase.absencebalance.GetAbsenceBalanceByIdUseCase;
 import no.tidly.modules.configuration.usecase.absencebalance.GetAbsenceBalancesByEmployeeUseCase;
+import no.tidly.modules.configuration.usecase.absencebalance.InitializeAnnualBalanceUseCase;
 import no.tidly.modules.configuration.usecase.absencebalance.UpdateAbsenceBalanceUseCase;
+import no.tidly.modules.configuration.dto.InitializeAnnualBalanceRequest;
+import no.tidly.modules.configuration.dto.InitializeAnnualBalanceResponse;
 
 @RestController
 @RequestMapping("/api/v1/absence-balances")
@@ -38,12 +41,20 @@ public class AbsenceBalanceController {
     private final GetAbsenceBalancesByEmployeeUseCase getAbsenceBalancesByEmployeeUseCase;
     private final UpdateAbsenceBalanceUseCase updateAbsenceBalanceUseCase;
     private final DeleteAbsenceBalanceUseCase deleteAbsenceBalanceUseCase;
+    private final InitializeAnnualBalanceUseCase initializeAnnualBalanceUseCase;
 
     @Operation(summary = "Create an absence balance", description = "Creates a new absence balance for an employee.")
     @PostMapping
     public ResponseEntity<AbsenceBalanceResponse> create(@Valid @RequestBody AbsenceBalanceRequest request) {
         AbsenceBalanceResponse response = createAbsenceBalanceUseCase.execute(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "Initialize annual balances", description = "Initializes the absence balances for a specific year, calculating carryover from the previous year.")
+    @PostMapping("/initialize")
+    public ResponseEntity<InitializeAnnualBalanceResponse> initializeAnnualBalances(
+            @Valid @RequestBody InitializeAnnualBalanceRequest request) {
+        return ResponseEntity.ok(initializeAnnualBalanceUseCase.execute(request));
     }
 
     @Operation(summary = "Get absence balance by ID", description = "Retrieves an absence balance by its unique identifier.")

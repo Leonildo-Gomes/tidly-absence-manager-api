@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import no.tidly.core.shared.BaseEntity;
+import no.tidly.modules.organization.domain.CompanyEntity;
 import no.tidly.modules.organization.domain.EmployeeEntity;
 
 @Entity
@@ -34,6 +35,10 @@ public class AbsenceBalanceEntity extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "absence_type_id", nullable = false)
     private AbsenceTypeEntity absenceType;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id", nullable = false)
+    private CompanyEntity company;
 
     @Column(nullable = false)
     private Integer year;

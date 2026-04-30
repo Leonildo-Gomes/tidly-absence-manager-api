@@ -7,22 +7,25 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import no.tidly.core.exceptions.ResourceNotFoundException;
+import no.tidly.modules.configuration.dto.AbsenceBalanceResponse;
+import no.tidly.modules.configuration.mapper.AbsenceBalanceMapper;
 import no.tidly.modules.configuration.repository.AbsenceBalanceRepository;
 import no.tidly.modules.organization.service.TenantService;
 
 @Service
 @RequiredArgsConstructor
-public class DeleteAbsenceBalanceUseCase {
+public class GetAbsenceBalancesByEmployeeYearUseCase {
 
     private final AbsenceBalanceRepository repository;
+    private final AbsenceBalanceMapper mapper;
     private final TenantService tenantService;
 
-    @Transactional
-    public void execute(UUID id) {
+    @Transactional(readOnly = true)
+    public AbsenceBalanceResponse execute(UUID employeeId, Integer year, UUID absenceTypeId) {
         var company = this.tenantService.getCurrentCompanyByTenant();
-        if (!repository.existsByIdAndCompanyId(id, company.getId())) {
-            throw new ResourceNotFoundException("AbsenceBalance not found with id: " + id);
-        }
-        repository.deleteById(id);
+        return repository
+                .findByEmployeeIdAndYearAndAbsenceTypeIdAndCompanyId(employeeId, year, absenceTypeId, company.getId())
+                .map(mapper::toResponse).orElseThrow(() -> new ResourceNotFoundException("AbsenceBalance not found"));
     }
+
 }

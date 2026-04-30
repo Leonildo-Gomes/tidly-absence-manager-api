@@ -5,8 +5,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import no.tidly.modules.configuration.domain.AbsenceBalanceEntity;
@@ -18,7 +16,14 @@ public interface AbsenceBalanceRepository extends JpaRepository<AbsenceBalanceEn
         Optional<AbsenceBalanceEntity> findByEmployeeIdAndYearAndAbsenceTypeId(UUID employeeId, Integer year,
                         UUID absenceTypeId);
 
-        @Query("SELECT ab FROM AbsenceBalanceEntity ab WHERE ab.employee.company.id = :companyId AND ab.employee.id = :employeeId")
-        List<AbsenceBalanceEntity> findByEmployeeIdAndCompanyId(@Param("employeeId") UUID employeeId,
-                        @Param("companyId") UUID companyId);
+        List<AbsenceBalanceEntity> findByEmployeeIdAndCompanyId(UUID employeeId, UUID companyId);
+
+        boolean existsByIdAndCompanyId(UUID id, UUID id2);
+
+        Optional<AbsenceBalanceEntity> findByIdAndCompanyId(UUID id, UUID id2);
+
+        Optional<AbsenceBalanceEntity> findByEmployeeIdAndYearAndAbsenceTypeIdAndCompanyId(UUID employeeId,
+                        Integer year, UUID absenceTypeId, UUID companyId);
+
+        List<AbsenceBalanceEntity> findByEmployeeIdAndCompanyIdAndYear(UUID employeeId, UUID companyId, Integer year);
 }

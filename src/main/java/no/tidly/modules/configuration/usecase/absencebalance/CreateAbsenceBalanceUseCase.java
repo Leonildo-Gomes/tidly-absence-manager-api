@@ -38,7 +38,8 @@ public class CreateAbsenceBalanceUseCase {
                 AbsenceTypeEntity absenceType = absenceTypeRepository.findById(request.absenceTypeId())
                                 .orElseThrow(() -> new ResourceNotFoundException("Absence type not found"));
 
-                AbsenceBalanceEntity entity = AbsenceBalanceEntity.builder()
+                var entity = AbsenceBalanceEntity.builder()
+                                .company(company)
                                 .employee(employee)
                                 .absenceType(absenceType)
                                 .year(request.year())
@@ -47,7 +48,7 @@ public class CreateAbsenceBalanceUseCase {
                                 .pendingDays(request.pendingDays() != null ? request.pendingDays() : BigDecimal.ZERO)
                                 .build();
 
-                AbsenceBalanceEntity savedEntity = repository.save(entity);
+                var savedEntity = repository.save(entity);
                 return mapper.toResponse(savedEntity);
         }
 
